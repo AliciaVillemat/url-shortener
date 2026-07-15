@@ -4,10 +4,10 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 2 — backend foundation
+- **Current milestone:** 3 — backend link creation and redirection
 - **Status:** implementation complete, awaiting user review and validation
-- **Next action:** user reviews milestone 2, runs the suggested Git commands if satisfied, and validates the milestone
-- **Last validated milestone:** 1 — repository and workspace foundation
+- **Next action:** user reviews milestone 3, runs the suggested Git commands if satisfied, and validates the milestone
+- **Last validated milestone:** 2 — backend foundation
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
@@ -39,7 +39,7 @@ Validation gate:
 - No secret, dependency, database, or generated artifact is staged.
 - The initial commit is visible on GitHub.
 
-### 2. Backend foundation `[~]`
+### 2. Backend foundation `[x]`
 
 - [x] Scaffold the NestJS TypeScript application.
 - [x] Add Prisma and the SQLite `Link` model.
@@ -49,18 +49,18 @@ Validation gate:
 - [x] Add `GET /api/health`.
 - [x] Add root `setup` and backend lifecycle scripts.
 - [x] Run setup, lint, typecheck, tests, and build.
-- [ ] Obtain user validation, commit, and push.
+- [x] Obtain user validation, commit, and push.
 
-### 3. Backend link creation and redirection `[ ]`
+### 3. Backend link creation and redirection `[~]`
 
-- [ ] Implement `POST /api/links` with stable response data.
-- [ ] Validate presence, syntax, protocol, and length server-side.
-- [ ] Generate case-sensitive Base62 codes with cryptographic randomness.
-- [ ] Enforce database uniqueness and bounded retries on insertion collision.
-- [ ] Implement `GET /:code` with a `302` redirect.
-- [ ] Return clean, consistent errors without leaking internals.
-- [ ] Ensure the server never fetches submitted destinations.
-- [ ] Run all milestone checks.
+- [x] Implement `POST /api/links` with stable response data.
+- [x] Validate presence, syntax, protocol, and length server-side.
+- [x] Generate case-sensitive Base62 codes with cryptographic randomness.
+- [x] Enforce database uniqueness and bounded retries on insertion collision.
+- [x] Implement `GET /:code` with a `302` redirect.
+- [x] Return clean, consistent errors without leaking internals.
+- [x] Ensure the server never fetches submitted destinations.
+- [x] Run all milestone checks.
 - [ ] Obtain user validation, commit, and push.
 
 ### 4. Backend integration tests `[ ]`
@@ -125,12 +125,13 @@ Validation gate:
 
 ## Decision log
 
-| Date       | Decision                                                            | Reason                                                                                                                                                    |
-| ---------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-07-15 | Create and push the GitHub repository during milestone 1.           | The user wants regular remote checkpoints throughout implementation.                                                                                      |
-| 2026-07-15 | Keep progress tracking in one root `TODO.md`.                       | A single source of truth is easier to maintain and resume than several process documents.                                                                 |
-| 2026-07-15 | Use Node.js 24.16.0 and pnpm 10.17.1 initially.                     | Both are installed locally, stable, and compatible; exact application dependencies will be locked in `pnpm-lock.yaml`.                                    |
-| 2026-07-15 | Use `pnpm run setup` as the documented preparation command.         | `pnpm setup` is reserved by the pnpm CLI for shell configuration and cannot safely invoke the package script.                                             |
-| 2026-07-15 | Run the API on port 3001 during local development.                  | Port 3000 is already occupied on the development machine; ports 3001 and 5173 were confirmed available.                                                   |
-| 2026-07-15 | Leave all future Git operations to the user.                        | The user wants to review changes and personally run staging, commit, and push commands.                                                                   |
-| 2026-07-15 | Create the empty SQLite file with Node before deploying migrations. | Prisma 7.8 did not create the missing local file before `migrate deploy`; the Node 24 SQLite module keeps setup deterministic without another dependency. |
+| Date       | Decision                                                                                   | Reason                                                                                                                                                    |
+| ---------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-07-15 | Create and push the GitHub repository during milestone 1.                                  | The user wants regular remote checkpoints throughout implementation.                                                                                      |
+| 2026-07-15 | Keep progress tracking in one root `TODO.md`.                                              | A single source of truth is easier to maintain and resume than several process documents.                                                                 |
+| 2026-07-15 | Use Node.js 24.16.0 and pnpm 10.17.1 initially.                                            | Both are installed locally, stable, and compatible; exact application dependencies will be locked in `pnpm-lock.yaml`.                                    |
+| 2026-07-15 | Use `pnpm run setup` as the documented preparation command.                                | `pnpm setup` is reserved by the pnpm CLI for shell configuration and cannot safely invoke the package script.                                             |
+| 2026-07-15 | Run the API on port 3001 during local development.                                         | Port 3000 is already occupied on the development machine; ports 3001 and 5173 were confirmed available.                                                   |
+| 2026-07-15 | Leave all future Git operations to the user.                                               | The user wants to review changes and personally run staging, commit, and push commands.                                                                   |
+| 2026-07-15 | Create the empty SQLite file with Node before deploying migrations.                        | Prisma 7.8 did not create the missing local file before `migrate deploy`; the Node 24 SQLite module keeps setup deterministic without another dependency. |
+| 2026-07-15 | Use seven-character Base62 codes, five collision attempts, and a 2048-character URL limit. | These conservative MVP limits satisfy the brief while keeping behavior explicit and easy to test.                                                         |
