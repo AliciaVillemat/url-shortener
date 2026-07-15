@@ -5,16 +5,17 @@ This file is the source of truth for project progress. It is updated at every va
 ## Resume here
 
 - **Current milestone:** 1 — repository and workspace foundation
-- **Status:** in progress, awaiting validation
-- **Next action:** validate milestone 1, then scaffold the NestJS API
+- **Status:** in progress, awaiting remote creation and validation
+- **Next action:** user reviews and publishes the initial repository, then validates milestone 1
 - **Last validated milestone:** none
-- **Remote repository:** pending creation
+- **Remote repository:** `AliciaVillemat/url-shortener` (public, pending user creation)
 
 ## Working agreement
 
 - Implement one milestone at a time.
 - Run the milestone checks before requesting validation.
-- After validation, update this file, create one logical commit, and push `main`.
+- After validation, update this file and suggest one logical set of Git commands.
+- The user reviews the changes and remains responsible for staging, committing, and pushing.
 - Record any material deviation from the brief in the decision log below.
 - Do not start the next milestone before user validation.
 
@@ -130,3 +131,5 @@ Validation gate:
 | 2026-07-15 | Keep progress tracking in one root `TODO.md`.               | A single source of truth is easier to maintain and resume than several process documents.                              |
 | 2026-07-15 | Use Node.js 24.16.0 and pnpm 10.17.1 initially.             | Both are installed locally, stable, and compatible; exact application dependencies will be locked in `pnpm-lock.yaml`. |
 | 2026-07-15 | Use `pnpm run setup` as the documented preparation command. | `pnpm setup` is reserved by the pnpm CLI for shell configuration and cannot safely invoke the package script.          |
+| 2026-07-15 | Run the API on port 3001 during local development.          | Port 3000 is already occupied on the development machine; ports 3001 and 5173 were confirmed available.                |
+| 2026-07-15 | Leave all future Git operations to the user.                | The user wants to review changes and personally run staging, commit, and push commands.                                |
