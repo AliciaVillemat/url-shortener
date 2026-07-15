@@ -4,11 +4,11 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 1 — repository and workspace foundation
-- **Status:** in progress, awaiting remote creation and validation
-- **Next action:** user reviews and publishes the initial repository, then validates milestone 1
-- **Last validated milestone:** none
-- **Remote repository:** `AliciaVillemat/url-shortener` (public, pending user creation)
+- **Current milestone:** 2 — backend foundation
+- **Status:** implementation complete, awaiting user review and validation
+- **Next action:** user reviews milestone 2, runs the suggested Git commands if satisfied, and validates the milestone
+- **Last validated milestone:** 1 — repository and workspace foundation
+- **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
 
@@ -23,15 +23,15 @@ Status legend: `[ ]` pending, `[~]` in progress, `[x]` completed and validated.
 
 ## Milestones
 
-### 1. Repository and workspace foundation `[~]`
+### 1. Repository and workspace foundation `[x]`
 
 - [x] Create the minimal `apps/api` and `apps/web` workspace structure.
 - [x] Add pnpm workspace and root orchestration scripts.
 - [x] Add shared formatting, editor, environment, and ignore files.
 - [x] Pin the Node.js and pnpm versions.
 - [x] Initialize Git with `main` as the default branch.
-- [ ] Create the GitHub repository and push the initial commit.
-- [ ] Obtain user validation.
+- [x] Create the GitHub repository and push the initial commit.
+- [x] Obtain user validation.
 
 Validation gate:
 
@@ -39,16 +39,16 @@ Validation gate:
 - No secret, dependency, database, or generated artifact is staged.
 - The initial commit is visible on GitHub.
 
-### 2. Backend foundation `[ ]`
+### 2. Backend foundation `[~]`
 
-- [ ] Scaffold the NestJS TypeScript application.
-- [ ] Add Prisma and the SQLite `Link` model.
-- [ ] Create and version the initial Prisma migration.
-- [ ] Validate required environment variables at startup.
-- [ ] Configure expected CORS origin and global request validation.
-- [ ] Add `GET /api/health`.
-- [ ] Add root `setup` and backend lifecycle scripts.
-- [ ] Run setup, lint, typecheck, tests, and build.
+- [x] Scaffold the NestJS TypeScript application.
+- [x] Add Prisma and the SQLite `Link` model.
+- [x] Create and version the initial Prisma migration.
+- [x] Validate required environment variables at startup.
+- [x] Configure expected CORS origin and global request validation.
+- [x] Add `GET /api/health`.
+- [x] Add root `setup` and backend lifecycle scripts.
+- [x] Run setup, lint, typecheck, tests, and build.
 - [ ] Obtain user validation, commit, and push.
 
 ### 3. Backend link creation and redirection `[ ]`
@@ -125,11 +125,12 @@ Validation gate:
 
 ## Decision log
 
-| Date       | Decision                                                    | Reason                                                                                                                 |
-| ---------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| 2026-07-15 | Create and push the GitHub repository during milestone 1.   | The user wants regular remote checkpoints throughout implementation.                                                   |
-| 2026-07-15 | Keep progress tracking in one root `TODO.md`.               | A single source of truth is easier to maintain and resume than several process documents.                              |
-| 2026-07-15 | Use Node.js 24.16.0 and pnpm 10.17.1 initially.             | Both are installed locally, stable, and compatible; exact application dependencies will be locked in `pnpm-lock.yaml`. |
-| 2026-07-15 | Use `pnpm run setup` as the documented preparation command. | `pnpm setup` is reserved by the pnpm CLI for shell configuration and cannot safely invoke the package script.          |
-| 2026-07-15 | Run the API on port 3001 during local development.          | Port 3000 is already occupied on the development machine; ports 3001 and 5173 were confirmed available.                |
-| 2026-07-15 | Leave all future Git operations to the user.                | The user wants to review changes and personally run staging, commit, and push commands.                                |
+| Date       | Decision                                                            | Reason                                                                                                                                                    |
+| ---------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-07-15 | Create and push the GitHub repository during milestone 1.           | The user wants regular remote checkpoints throughout implementation.                                                                                      |
+| 2026-07-15 | Keep progress tracking in one root `TODO.md`.                       | A single source of truth is easier to maintain and resume than several process documents.                                                                 |
+| 2026-07-15 | Use Node.js 24.16.0 and pnpm 10.17.1 initially.                     | Both are installed locally, stable, and compatible; exact application dependencies will be locked in `pnpm-lock.yaml`.                                    |
+| 2026-07-15 | Use `pnpm run setup` as the documented preparation command.         | `pnpm setup` is reserved by the pnpm CLI for shell configuration and cannot safely invoke the package script.                                             |
+| 2026-07-15 | Run the API on port 3001 during local development.                  | Port 3000 is already occupied on the development machine; ports 3001 and 5173 were confirmed available.                                                   |
+| 2026-07-15 | Leave all future Git operations to the user.                        | The user wants to review changes and personally run staging, commit, and push commands.                                                                   |
+| 2026-07-15 | Create the empty SQLite file with Node before deploying migrations. | Prisma 7.8 did not create the missing local file before `migrate deploy`; the Node 24 SQLite module keeps setup deterministic without another dependency. |
