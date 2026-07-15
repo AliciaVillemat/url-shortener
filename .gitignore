@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Builds and reports
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# SQLite databases and journals
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Tooling and operating system files
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Vite
+apps/web/.vite/

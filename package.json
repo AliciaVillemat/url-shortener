@@ -1,0 +1,25 @@
+{
+  "name": "url-shortener",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A full-stack URL shortener technical exercise",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=24.16.0 <25",
+    "pnpm": ">=10.17.1 <11"
+  },
+  "packageManager": "pnpm@10.17.1",
+  "scripts": {
+    "setup": "pnpm --recursive --if-present run setup",
+    "dev": "pnpm --parallel --stream --filter './apps/*' run dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "pnpm --recursive --if-present run lint",
+    "typecheck": "pnpm --recursive --if-present run typecheck",
+    "test": "pnpm --recursive --if-present run test",
+    "build": "pnpm --recursive --if-present run build"
+  },
+  "devDependencies": {
+    "prettier": "3.9.5"
+  }
+}
