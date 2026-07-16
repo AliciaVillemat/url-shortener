@@ -4,10 +4,10 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 4 — backend integration tests
+- **Current milestone:** 5 — frontend application
 - **Status:** implementation complete, awaiting user review and validation
-- **Next action:** user reviews milestone 4, runs the suggested Git commands if satisfied, and validates the milestone
-- **Last validated milestone:** 3 — backend link creation and redirection
+- **Next action:** user reviews milestone 5, runs the suggested Git commands if satisfied, and validates the milestone
+- **Last validated milestone:** 4 — backend integration tests
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
@@ -64,7 +64,7 @@ Validation gate:
 - [x] Run all milestone checks.
 - [x] Obtain user validation, commit, and push.
 
-### 4. Backend integration tests `[~]`
+### 4. Backend integration tests `[x]`
 
 - [x] Use an isolated, reproducible test database.
 - [x] Cover valid HTTPS and HTTP creation.
@@ -73,18 +73,18 @@ Validation gate:
 - [x] Cover successful redirect and unknown-code `404`.
 - [x] Cover a simulated insertion collision where practical.
 - [x] Run all milestone checks.
-- [ ] Obtain user validation, commit, and push.
+- [x] Obtain user validation, commit, and push.
 
-### 5. Frontend application `[ ]`
+### 5. Frontend application `[~]`
 
-- [ ] Scaffold React, TypeScript, Vite, and Tailwind CSS.
-- [ ] Build the accessible URL submission form.
-- [ ] Validate URL presence, syntax, protocol, and length client-side.
-- [ ] Add loading and useful error states.
-- [ ] Display the generated short URL.
-- [ ] Add copy feedback and open-link action.
-- [ ] Make the interface polished and responsive.
-- [ ] Run lint, typecheck, and build.
+- [x] Scaffold React, TypeScript, Vite, and Tailwind CSS.
+- [x] Build the accessible URL submission form.
+- [x] Validate URL presence, syntax, protocol, and length client-side.
+- [x] Add loading and useful error states.
+- [x] Display the generated short URL.
+- [x] Add copy feedback and open-link action.
+- [x] Make the interface polished and responsive.
+- [x] Run lint, typecheck, and build.
 - [ ] Obtain user validation, commit, and push.
 
 ### 6. Frontend tests `[ ]`
@@ -138,3 +138,4 @@ Validation gate:
 | 2026-07-15 | Use seven-character Base62 codes, five collision attempts, and a 2048-character URL limit. | These conservative MVP limits satisfy the brief while keeping behavior explicit and easy to test.                                                         |
 | 2026-07-15 | Version a Bruno OpenCollection in YAML without adding its CLI dependency.                  | Bruno 3 recommends the review-friendly YAML format; the desktop collection is sufficient for manual checks and avoids extra project dependencies.         |
 | 2026-07-16 | Run backend integration tests against a disposable migrated SQLite database.               | Each run is reproducible, exercises real Prisma persistence, and cannot alter local development data.                                                     |
+| 2026-07-16 | Keep API and web ports configurable but explicit, with Vite strict port selection.         | Automatic discovery would require synchronizing runtime values across CORS, public links, and the browser; explicit configuration is more predictable.    |
