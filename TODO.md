@@ -4,10 +4,10 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 3 — backend link creation and redirection
+- **Current milestone:** 4 — backend integration tests
 - **Status:** implementation complete, awaiting user review and validation
-- **Next action:** user reviews milestone 3, runs the suggested Git commands if satisfied, and validates the milestone
-- **Last validated milestone:** 2 — backend foundation
+- **Next action:** user reviews milestone 4, runs the suggested Git commands if satisfied, and validates the milestone
+- **Last validated milestone:** 3 — backend link creation and redirection
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
@@ -51,7 +51,7 @@ Validation gate:
 - [x] Run setup, lint, typecheck, tests, and build.
 - [x] Obtain user validation, commit, and push.
 
-### 3. Backend link creation and redirection `[~]`
+### 3. Backend link creation and redirection `[x]`
 
 - [x] Implement `POST /api/links` with stable response data.
 - [x] Validate presence, syntax, protocol, and length server-side.
@@ -62,17 +62,17 @@ Validation gate:
 - [x] Ensure the server never fetches submitted destinations.
 - [x] Add a versioned Bruno collection for manual API verification.
 - [x] Run all milestone checks.
-- [ ] Obtain user validation, commit, and push.
+- [x] Obtain user validation, commit, and push.
 
-### 4. Backend integration tests `[ ]`
+### 4. Backend integration tests `[~]`
 
-- [ ] Use an isolated, reproducible test database.
-- [ ] Cover valid HTTPS and HTTP creation.
-- [ ] Cover invalid values and forbidden protocols.
-- [ ] Cover persistence and generated code format.
-- [ ] Cover successful redirect and unknown-code `404`.
-- [ ] Cover a simulated insertion collision where practical.
-- [ ] Run all milestone checks.
+- [x] Use an isolated, reproducible test database.
+- [x] Cover valid HTTPS and HTTP creation.
+- [x] Cover invalid values and forbidden protocols.
+- [x] Cover persistence and generated code format.
+- [x] Cover successful redirect and unknown-code `404`.
+- [x] Cover a simulated insertion collision where practical.
+- [x] Run all milestone checks.
 - [ ] Obtain user validation, commit, and push.
 
 ### 5. Frontend application `[ ]`
@@ -137,3 +137,4 @@ Validation gate:
 | 2026-07-15 | Create the empty SQLite file with Node before deploying migrations.                        | Prisma 7.8 did not create the missing local file before `migrate deploy`; the Node 24 SQLite module keeps setup deterministic without another dependency. |
 | 2026-07-15 | Use seven-character Base62 codes, five collision attempts, and a 2048-character URL limit. | These conservative MVP limits satisfy the brief while keeping behavior explicit and easy to test.                                                         |
 | 2026-07-15 | Version a Bruno OpenCollection in YAML without adding its CLI dependency.                  | Bruno 3 recommends the review-friendly YAML format; the desktop collection is sufficient for manual checks and avoids extra project dependencies.         |
+| 2026-07-16 | Run backend integration tests against a disposable migrated SQLite database.               | Each run is reproducible, exercises real Prisma persistence, and cannot alter local development data.                                                     |
