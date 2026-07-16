@@ -1,0 +1,33 @@
+info:
+  name: URL too long
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: '{{baseUrl}}/api/links'
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: '{}'
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        req.setBody({
+          url: `https://example.com/${'a'.repeat(2050)}`,
+        });
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: '400'
+    - expression: res.body.code
+      operator: eq
+      value: URL_TOO_LONG
+
+settings:
+  encodeUrl: true
+  timeout: 5000

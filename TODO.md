@@ -60,6 +60,7 @@ Validation gate:
 - [x] Implement `GET /:code` with a `302` redirect.
 - [x] Return clean, consistent errors without leaking internals.
 - [x] Ensure the server never fetches submitted destinations.
+- [x] Add a versioned Bruno collection for manual API verification.
 - [x] Run all milestone checks.
 - [ ] Obtain user validation, commit, and push.
 
@@ -135,3 +136,4 @@ Validation gate:
 | 2026-07-15 | Leave all future Git operations to the user.                                               | The user wants to review changes and personally run staging, commit, and push commands.                                                                   |
 | 2026-07-15 | Create the empty SQLite file with Node before deploying migrations.                        | Prisma 7.8 did not create the missing local file before `migrate deploy`; the Node 24 SQLite module keeps setup deterministic without another dependency. |
 | 2026-07-15 | Use seven-character Base62 codes, five collision attempts, and a 2048-character URL limit. | These conservative MVP limits satisfy the brief while keeping behavior explicit and easy to test.                                                         |
+| 2026-07-15 | Version a Bruno OpenCollection in YAML without adding its CLI dependency.                  | Bruno 3 recommends the review-friendly YAML format; the desktop collection is sufficient for manual checks and avoids extra project dependencies.         |

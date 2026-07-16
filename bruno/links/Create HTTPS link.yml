@@ -1,0 +1,47 @@
+info:
+  name: Create HTTPS link
+  type: http
+  seq: 1
+  tags:
+    - smoke
+
+http:
+  method: POST
+  url: '{{baseUrl}}/api/links'
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "url": "https://www.example.com/some/long/path"
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.status === 201) {
+          bru.setVar('shortCode', res.body.code);
+        }
+    - type: tests
+      code: |-
+        test('returns a seven-character Base62 code', function () {
+          expect(res.body.code).to.match(/^[0-9A-Za-z]{7}$/);
+        });
+
+        test('returns the configured short URL', function () {
+          expect(res.body.shortUrl).to.equal(`${bru.getEnvVar('baseUrl')}/${res.body.code}`);
+        });
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: '201'
+    - expression: res.body.originalUrl
+      operator: eq
+      value: https://www.example.com/some/long/path
+
+settings:
+  encodeUrl: true
+  timeout: 5000

@@ -1,0 +1,30 @@
+info:
+  name: Create HTTP link
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: '{{baseUrl}}/api/links'
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "url": "http://example.org/resource"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: '201'
+    - expression: res.body.originalUrl
+      operator: eq
+      value: http://example.org/resource
+
+settings:
+  encodeUrl: true
+  timeout: 5000

@@ -1,0 +1,30 @@
+info:
+  name: Unsupported protocol
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: '{{baseUrl}}/api/links'
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "url": "javascript:alert(1)"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: '400'
+    - expression: res.body.code
+      operator: eq
+      value: UNSUPPORTED_PROTOCOL
+
+settings:
+  encodeUrl: true
+  timeout: 5000

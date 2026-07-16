@@ -1,0 +1,30 @@
+info:
+  name: Invalid URL
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: '{{baseUrl}}/api/links'
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "url": "not-a-url"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: '400'
+    - expression: res.body.code
+      operator: eq
+      value: INVALID_URL
+
+settings:
+  encodeUrl: true
+  timeout: 5000
