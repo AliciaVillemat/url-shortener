@@ -4,10 +4,10 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 9 — clean-install acceptance audit
-- **Status:** clean-install audit complete; awaiting final user acceptance
-- **Next action:** user reviews the audit evidence below and validates milestone 9
-- **Last validated milestone:** 8 — quality, CI, and final documentation
+- **Current milestone:** implementation complete
+- **Status:** all milestones completed and validated
+- **Next action:** add useful improvements
+- **Last validated milestone:** 9 — clean-install acceptance audit
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
@@ -124,7 +124,7 @@ Verification evidence recorded on 2026-07-17:
 - [x] Add a useful screenshot if the final interface warrants one.
 - [x] Obtain user validation.
 
-### 9. Clean-install acceptance audit `[~]`
+### 9. Clean-install acceptance audit `[x]`
 
 - [x] Reinstall dependencies from the lockfile in a clean state.
 - [x] Follow the README setup instructions exactly.
@@ -132,23 +132,4 @@ Verification evidence recorded on 2026-07-17:
 - [x] Start both applications and repeat the critical manual flow.
 - [x] Audit tracked files for secrets, local databases, and artifacts.
 - [x] Verify the final GitHub repository content.
-- [ ] Obtain final user acceptance and push the final audit commit.
-
-## Decision log
-
-| Date       | Decision                                                                                   | Reason                                                                                                                                                    |
-| ---------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-07-15 | Create and push the GitHub repository during milestone 1.                                  | The user wants regular remote checkpoints throughout implementation.                                                                                      |
-| 2026-07-15 | Keep progress tracking in one root `TODO.md`.                                              | A single source of truth is easier to maintain and resume than several process documents.                                                                 |
-| 2026-07-15 | Use Node.js 24.16.0 and pnpm 10.17.1 initially.                                            | Both are installed locally, stable, and compatible; exact application dependencies will be locked in `pnpm-lock.yaml`.                                    |
-| 2026-07-15 | Use `pnpm run setup` as the documented preparation command.                                | `pnpm setup` is reserved by the pnpm CLI for shell configuration and cannot safely invoke the package script.                                             |
-| 2026-07-15 | Run the API on port 3001 during local development.                                         | Port 3000 is already occupied on the development machine; ports 3001 and 5173 were confirmed available.                                                   |
-| 2026-07-15 | Leave all future Git operations to the user.                                               | The user wants to review changes and personally run staging, commit, and push commands.                                                                   |
-| 2026-07-15 | Create the empty SQLite file with Node before deploying migrations.                        | Prisma 7.8 did not create the missing local file before `migrate deploy`; the Node 24 SQLite module keeps setup deterministic without another dependency. |
-| 2026-07-15 | Use seven-character Base62 codes, five collision attempts, and a 2048-character URL limit. | These conservative MVP limits satisfy the brief while keeping behavior explicit and easy to test.                                                         |
-| 2026-07-15 | Version a Bruno OpenCollection in YAML without adding its CLI dependency.                  | Bruno 3 recommends the review-friendly YAML format; the desktop collection is sufficient for manual checks and avoids extra project dependencies.         |
-| 2026-07-16 | Run backend integration tests against a disposable migrated SQLite database.               | Each run is reproducible, exercises real Prisma persistence, and cannot alter local development data.                                                     |
-| 2026-07-16 | Keep API and web ports configurable but explicit, with Vite strict port selection.         | Automatic discovery would require synchronizing runtime values across CORS, public links, and the browser; explicit configuration is more predictable.    |
-| 2026-07-17 | Test frontend behavior with Vitest, jsdom, and Testing Library at the component boundary.  | Mocking the API keeps UI tests fast and deterministic while the existing backend suite independently verifies HTTP and persistence behavior.              |
-| 2026-07-17 | Run application setup before quality checks in continuous integration.                     | The generated Prisma client is intentionally ignored, so a clean CI checkout must generate it before linting, type-checking, testing, and building.       |
-| 2026-07-17 | Keep the public README focused and move interview preparation into a local ignored note.   | The user prefers concise clone-and-run documentation and wants to develop deeper trade-off explanations collaboratively for the interview.                |
+- [x] Obtain final user acceptance and push the final audit commit.
