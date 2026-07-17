@@ -4,10 +4,10 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 8 — quality, CI, and final documentation
-- **Status:** implementation complete, awaiting user review and validation
-- **Next action:** user reviews the README, screenshot, and CI workflow before the clean-install audit
-- **Last validated milestone:** 7 — full-stack integration and manual verification
+- **Current milestone:** 9 — clean-install acceptance audit
+- **Status:** clean-install audit complete; awaiting final user acceptance
+- **Next action:** user reviews the audit evidence below and validates milestone 9
+- **Last validated milestone:** 8 — quality, CI, and final documentation
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
@@ -115,23 +115,23 @@ Verification evidence recorded on 2026-07-17:
 - An isolated API instance retained a created link after a complete stop and restart against the same SQLite database.
 - The user confirmed clipboard, open-link, keyboard focus, mobile, and desktop behavior in an interactive browser.
 
-### 8. Quality, CI, and final documentation `[~]`
+### 8. Quality, CI, and final documentation `[x]`
 
 - [x] Make root format, lint, typecheck, test, and build checks pass.
 - [x] Add a minimal GitHub Actions quality workflow.
 - [x] Complete a focused clone-and-run README with the product, setup, API, architecture, and main decisions.
 - [x] Preserve interview-specific trade-offs, limits, production evolution, CI, and AI notes in an ignored local file.
 - [x] Add a useful screenshot if the final interface warrants one.
-- [ ] Obtain user validation, commit, and push.
+- [x] Obtain user validation.
 
-### 9. Clean-install acceptance audit `[ ]`
+### 9. Clean-install acceptance audit `[~]`
 
-- [ ] Reinstall dependencies from the lockfile in a clean state.
-- [ ] Follow the README setup instructions exactly.
-- [ ] Run setup, lint, typecheck, tests, and builds.
-- [ ] Start both applications and repeat the critical manual flow.
-- [ ] Audit tracked files for secrets, local databases, and artifacts.
-- [ ] Verify the final GitHub repository content.
+- [x] Reinstall dependencies from the lockfile in a clean state.
+- [x] Follow the README setup instructions exactly.
+- [x] Run setup, lint, typecheck, tests, and builds.
+- [x] Start both applications and repeat the critical manual flow.
+- [x] Audit tracked files for secrets, local databases, and artifacts.
+- [x] Verify the final GitHub repository content.
 - [ ] Obtain final user acceptance and push the final audit commit.
 
 ## Decision log
