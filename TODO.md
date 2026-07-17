@@ -4,10 +4,10 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 7 — full-stack integration and manual verification
-- **Status:** ready to start after the milestone 6 Git checkpoint
-- **Next action:** user commits and pushes milestone 6, then full-stack verification begins
-- **Last validated milestone:** 6 — frontend tests
+- **Current milestone:** 8 — quality, CI, and final documentation
+- **Status:** ready to start after the milestone 7 Git checkpoint
+- **Next action:** user commits and pushes milestone 7, then quality and documentation work begins
+- **Last validated milestone:** 7 — full-stack integration and manual verification
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
@@ -96,14 +96,24 @@ Validation gate:
 - [x] Run all milestone checks.
 - [x] Obtain user validation.
 
-### 7. Full-stack integration and manual verification `[ ]`
+### 7. Full-stack integration and manual verification `[x]`
 
-- [ ] Connect the web application to the configured API URL.
-- [ ] Test real creation, copy, open, and redirect flows.
-- [ ] Verify unknown codes return `404` without frontend fallback.
-- [ ] Verify data persists after an API restart.
-- [ ] Check keyboard navigation, focus states, mobile, and desktop layouts.
-- [ ] Obtain user validation, commit, and push.
+- [x] Connect the web application to the configured API URL.
+- [x] Test real creation and redirect flows against the running applications.
+- [x] Verify copy and open-link actions in an interactive browser.
+- [x] Verify unknown codes return `404` without frontend fallback.
+- [x] Verify data persists after an API restart.
+- [x] Check keyboard navigation, focus states, mobile, and desktop layouts in an interactive browser.
+- [x] Obtain user validation.
+
+Verification evidence recorded on 2026-07-17:
+
+- The web application and API responded on the configured ports `5173` and `3001`.
+- The API health check returned `200`, and the browser preflight returned `204` with the expected CORS headers.
+- A live URL creation returned `201`; its generated short URL returned `302` to the original destination.
+- An unknown, correctly shaped code returned the API's JSON `404` response rather than frontend HTML.
+- An isolated API instance retained a created link after a complete stop and restart against the same SQLite database.
+- The user confirmed clipboard, open-link, keyboard focus, mobile, and desktop behavior in an interactive browser.
 
 ### 8. Quality, CI, and final documentation `[ ]`
 
