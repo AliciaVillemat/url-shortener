@@ -11,4 +11,6 @@ This directory contains the manual API checks for the URL shortener in Bruno's O
 
 `Create HTTPS link` stores its returned code as the runtime variable `shortCode`. Run it before `Redirect last created link` when executing requests individually. Redirect following is disabled for that request so Bruno exposes the API's `302` and `Location` header instead of visiting the external destination.
 
+`Create expiring link` exercises the optional `1h` preset and also stores its generated code. `Invalid expiration` verifies that unsupported values are rejected with `INVALID_EXPIRATION`.
+
 The Bruno CLI is intentionally not a project dependency. If it is already installed on your machine, the collection can also be run from this directory with `bru run --env Local` while the API is running.

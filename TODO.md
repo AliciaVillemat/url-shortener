@@ -5,8 +5,7 @@ This file is the source of truth for project progress. It is updated at every va
 ## Resume here
 
 - **Current milestone:** 10 — optional link expiration
-- **Status:** frontend complete; awaiting user visual validation
-- **Next action:** user reviews the expiration selector and result information before final documentation and acceptance checks
+- **Status:** final user validation
 - **Last validated milestone:** 9 — clean-install acceptance audit
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
@@ -145,5 +144,5 @@ Verification evidence recorded on 2026-07-17:
 - [x] Obtain user validation of the backend behavior.
 - [x] Add the expiration control and result information to the web interface.
 - [x] Cover the frontend request and rendering behavior with tests.
-- [ ] Update public documentation and complete the full-stack acceptance checks.
-- [ ] Obtain final user validation.
+- [x] Update public documentation and complete the full-stack acceptance checks.
+- [x] Obtain final user validation.

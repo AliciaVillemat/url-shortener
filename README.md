@@ -11,6 +11,7 @@ A small full-stack URL shortener built with React, NestJS, Prisma, and SQLite. I
 - Client- and server-side URL validation
 - Cryptographically generated Base62 codes
 - Persistent SQLite storage through Prisma
+- Optional server-calculated expiration with clear expired-link behavior
 - Copy and open-link actions with accessible feedback
 - Responsive, keyboard-friendly React interface
 - Consistent API errors and an isolated integration test database
@@ -94,9 +95,12 @@ POST /api/links
 Content-Type: application/json
 
 {
-  "url": "https://www.example.com/some/long/path"
+  "url": "https://www.example.com/some/long/path",
+  "expiration": "7d"
 }
 ```
+
+`expiration` is optional. Supported values are `1h`, `1d`, `7d`, and `30d`; omit it to create a permanent link. The server calculates the exact expiration time.
 
 Successful response (`201`):
 
@@ -105,9 +109,12 @@ Successful response (`201`):
   "code": "aB3xYz7",
   "originalUrl": "https://www.example.com/some/long/path",
   "shortUrl": "http://localhost:3001/aB3xYz7",
-  "createdAt": "2026-07-17T08:30:00.000Z"
+  "createdAt": "2026-07-17T08:30:00.000Z",
+  "expiresAt": "2026-07-24T08:30:00.000Z"
 }
 ```
+
+`expiresAt` is `null` for a permanent link.
 
 ### Redirect
 
@@ -115,7 +122,7 @@ Successful response (`201`):
 GET /:code
 ```
 
-Known codes return `302` with the original URL in the `Location` header. Unknown or malformed codes return a JSON `404`; they never fall through to the frontend.
+Active codes return `302` with the original URL in the `Location` header. Unknown or malformed codes return a JSON `404`; expired codes return a JSON `410 Gone`. They never fall through to the frontend.
 
 ### Health check
 
@@ -146,9 +153,9 @@ pnpm --filter @url-shortener/web test:watch
 
 ## Testing
 
-The backend Jest/Supertest suite uses a disposable SQLite database, applies the real Prisma migration, runs serially, and removes the database afterward. It covers validation, persistence, redirects, unknown codes, Base62 formatting, repeated URLs, and a simulated unique-code collision.
+The backend Jest/Supertest suite uses a disposable SQLite database, applies the real Prisma migrations, runs serially, and removes the database afterward. It covers validation, persistence, redirects, expiration, unknown codes, Base62 formatting, repeated URLs, and a simulated unique-code collision.
 
-The frontend Vitest and Testing Library suite runs in jsdom. It covers URL validation, form submission, loading, API errors, rendered results, and clipboard success and failure.
+The frontend Vitest and Testing Library suite runs in jsdom. It covers URL validation, expiration requests, form submission, loading, API errors, rendered results, and clipboard success and failure.
 
 A Bruno 3+ collection is available in [`bruno/`](./bruno). Open that directory in Bruno and select the `Local` environment. Run `Create HTTPS link` before `Redirect last created link` so the generated code is captured automatically.
 
@@ -168,7 +175,7 @@ A Bruno 3+ collection is available in [`bruno/`](./bruno). Open that directory i
 └── pnpm-workspace.yaml
 ```
 
-The browser sends `POST /api/links` to the NestJS API. The controller validates the DTO, the service performs URL and code-generation rules, and Prisma persists the link. `GET /:code` reads the destination through the same service and returns a `302` redirect.
+The browser sends `POST /api/links` to the NestJS API. The controller validates the DTO, the service performs URL, expiration, and code-generation rules, and Prisma persists the link. `GET /:code` reads the destination through the same service, rejects expired links, and otherwise returns a `302` redirect.
 
 The backend intentionally stays close to NestJS conventions: controllers handle HTTP, services contain business rules, and Prisma owns persistence. There is no generic repository or shared package because neither adds value at this size.
 
@@ -178,6 +185,7 @@ The backend intentionally stays close to NestJS conventions: controllers handle 
 - **Collision handling at insertion:** a conflicting insert generates a new code and retries, up to five attempts. There is no race-prone preflight lookup.
 - **SQLite and Prisma:** keep local setup small while retaining a typed client and versioned migration.
 - **HTTP `302`:** avoids permanent browser caching and leaves room for editable destinations in a future version.
+- **Server-calculated expiration:** optional presets keep the form simple, avoid trusting the browser clock, and produce an explicit `410 Gone` after expiry.
 - **Validation on both sides:** client validation improves feedback; server validation remains authoritative.
 - **No server-side URL fetch:** submitted destinations are parsed and stored but never visited, avoiding an unnecessary SSRF surface.
 - **Explicit ports:** predictable configuration is preferred over runtime port discovery, which would also need to synchronize CORS and public URLs.
@@ -188,6 +196,7 @@ The backend intentionally stays close to NestJS conventions: controllers handle 
 - URLs are limited to 2,048 characters.
 - Repeated submissions of the same URL create distinct codes. This keeps the model simple and allows future links to have independent analytics or expiration dates.
 - URLs are not aggressively normalized or deduplicated.
-- The MVP has no authentication, ownership, analytics, custom aliases, editing, expiration, or deletion.
+- Expiration is optional. Expired links remain stored so the API can distinguish them from unknown links; there is no automatic deletion job.
+- The application has no authentication, ownership, analytics, custom aliases, editing, or deletion.
 - A single public base URL and one expected web origin are configured per environment.
 - The application stores destinations but does not verify that they are reachable or safe.
