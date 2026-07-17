@@ -24,5 +24,8 @@ apps/api/src/generated/
 .vscode/
 *.log
 
+# Local working notes
+NOTES.local.md
+
 # Vite
 apps/web/.vite/

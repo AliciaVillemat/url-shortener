@@ -5,8 +5,8 @@ This file is the source of truth for project progress. It is updated at every va
 ## Resume here
 
 - **Current milestone:** 8 — quality, CI, and final documentation
-- **Status:** ready to start after the milestone 7 Git checkpoint
-- **Next action:** user commits and pushes milestone 7, then quality and documentation work begins
+- **Status:** implementation complete, awaiting user review and validation
+- **Next action:** user reviews the README, screenshot, and CI workflow before the clean-install audit
 - **Last validated milestone:** 7 — full-stack integration and manual verification
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
@@ -115,13 +115,13 @@ Verification evidence recorded on 2026-07-17:
 - An isolated API instance retained a created link after a complete stop and restart against the same SQLite database.
 - The user confirmed clipboard, open-link, keyboard focus, mobile, and desktop behavior in an interactive browser.
 
-### 8. Quality, CI, and final documentation `[ ]`
+### 8. Quality, CI, and final documentation `[~]`
 
-- [ ] Make root format, lint, typecheck, test, and build checks pass.
-- [ ] Add a minimal GitHub Actions quality workflow.
-- [ ] Complete the README sections required by the brief.
-- [ ] Document product decisions, trade-offs, limits, production evolution, and AI use.
-- [ ] Add a useful screenshot if the final interface warrants one.
+- [x] Make root format, lint, typecheck, test, and build checks pass.
+- [x] Add a minimal GitHub Actions quality workflow.
+- [x] Complete a focused clone-and-run README with the product, setup, API, architecture, and main decisions.
+- [x] Preserve interview-specific trade-offs, limits, production evolution, CI, and AI notes in an ignored local file.
+- [x] Add a useful screenshot if the final interface warrants one.
 - [ ] Obtain user validation, commit, and push.
 
 ### 9. Clean-install acceptance audit `[ ]`
@@ -150,3 +150,5 @@ Verification evidence recorded on 2026-07-17:
 | 2026-07-16 | Run backend integration tests against a disposable migrated SQLite database.               | Each run is reproducible, exercises real Prisma persistence, and cannot alter local development data.                                                     |
 | 2026-07-16 | Keep API and web ports configurable but explicit, with Vite strict port selection.         | Automatic discovery would require synchronizing runtime values across CORS, public links, and the browser; explicit configuration is more predictable.    |
 | 2026-07-17 | Test frontend behavior with Vitest, jsdom, and Testing Library at the component boundary.  | Mocking the API keeps UI tests fast and deterministic while the existing backend suite independently verifies HTTP and persistence behavior.              |
+| 2026-07-17 | Run application setup before quality checks in continuous integration.                     | The generated Prisma client is intentionally ignored, so a clean CI checkout must generate it before linting, type-checking, testing, and building.       |
+| 2026-07-17 | Keep the public README focused and move interview preparation into a local ignored note.   | The user prefers concise clone-and-run documentation and wants to develop deeper trade-off explanations collaboratively for the interview.                |
