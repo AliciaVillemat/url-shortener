@@ -4,10 +4,10 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 5 — frontend application
-- **Status:** implementation complete, awaiting user review and validation
-- **Next action:** user reviews milestone 5, runs the suggested Git commands if satisfied, and validates the milestone
-- **Last validated milestone:** 4 — backend integration tests
+- **Current milestone:** 7 — full-stack integration and manual verification
+- **Status:** ready to start after the milestone 6 Git checkpoint
+- **Next action:** user commits and pushes milestone 6, then full-stack verification begins
+- **Last validated milestone:** 6 — frontend tests
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
@@ -75,7 +75,7 @@ Validation gate:
 - [x] Run all milestone checks.
 - [x] Obtain user validation, commit, and push.
 
-### 5. Frontend application `[~]`
+### 5. Frontend application `[x]`
 
 - [x] Scaffold React, TypeScript, Vite, and Tailwind CSS.
 - [x] Build the accessible URL submission form.
@@ -85,16 +85,16 @@ Validation gate:
 - [x] Add copy feedback and open-link action.
 - [x] Make the interface polished and responsive.
 - [x] Run lint, typecheck, and build.
-- [ ] Obtain user validation, commit, and push.
+- [x] Obtain user validation.
 
-### 6. Frontend tests `[ ]`
+### 6. Frontend tests `[x]`
 
-- [ ] Configure Vitest and Testing Library.
-- [ ] Cover client validation and submission.
-- [ ] Cover result and API error rendering.
-- [ ] Cover loading and clipboard behavior where maintainable.
-- [ ] Run all milestone checks.
-- [ ] Obtain user validation, commit, and push.
+- [x] Configure Vitest and Testing Library.
+- [x] Cover client validation and submission.
+- [x] Cover result and API error rendering.
+- [x] Cover loading and clipboard behavior where maintainable.
+- [x] Run all milestone checks.
+- [x] Obtain user validation.
 
 ### 7. Full-stack integration and manual verification `[ ]`
 
@@ -139,3 +139,4 @@ Validation gate:
 | 2026-07-15 | Version a Bruno OpenCollection in YAML without adding its CLI dependency.                  | Bruno 3 recommends the review-friendly YAML format; the desktop collection is sufficient for manual checks and avoids extra project dependencies.         |
 | 2026-07-16 | Run backend integration tests against a disposable migrated SQLite database.               | Each run is reproducible, exercises real Prisma persistence, and cannot alter local development data.                                                     |
 | 2026-07-16 | Keep API and web ports configurable but explicit, with Vite strict port selection.         | Automatic discovery would require synchronizing runtime values across CORS, public links, and the browser; explicit configuration is more predictable.    |
+| 2026-07-17 | Test frontend behavior with Vitest, jsdom, and Testing Library at the component boundary.  | Mocking the API keeps UI tests fast and deterministic while the existing backend suite independently verifies HTTP and persistence behavior.              |
