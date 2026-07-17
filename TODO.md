@@ -4,9 +4,9 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** 10 — optional link expiration
-- **Status:** final user validation
-- **Last validated milestone:** 9 — clean-install acceptance audit
+- **Current milestone:** implementation complete
+- **Status:** all product milestones completed and validated
+- **Last validated milestone:** 10 — optional link expiration
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
 ## Working agreement
