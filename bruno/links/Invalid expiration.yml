@@ -1,7 +1,7 @@
 info:
-  name: Missing URL
+  name: Invalid expiration
   type: http
-  seq: 4
+  seq: 8
 
 http:
   method: POST
@@ -11,7 +11,11 @@ http:
       value: application/json
   body:
     type: json
-    data: '{}'
+    data: |-
+      {
+        "url": "https://example.com",
+        "expiration": "2h"
+      }
 
 runtime:
   assertions:
@@ -20,7 +24,7 @@ runtime:
       value: '400'
     - expression: res.body.code
       operator: eq
-      value: URL_REQUIRED
+      value: INVALID_EXPIRATION
 
 settings:
   encodeUrl: true

@@ -4,9 +4,9 @@ This file is the source of truth for project progress. It is updated at every va
 
 ## Resume here
 
-- **Current milestone:** implementation complete
-- **Status:** all milestones completed and validated
-- **Next action:** add useful improvements
+- **Current milestone:** 10 — optional link expiration
+- **Status:** backend complete; awaiting user validation
+- **Next action:** user reviews and manually exercises the expiration API before frontend implementation
 - **Last validated milestone:** 9 — clean-install acceptance audit
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
@@ -133,3 +133,17 @@ Verification evidence recorded on 2026-07-17:
 - [x] Audit tracked files for secrets, local databases, and artifacts.
 - [x] Verify the final GitHub repository content.
 - [x] Obtain final user acceptance and push the final audit commit.
+
+### 10. Optional link expiration `[~]`
+
+- [x] Define the product rules: optional presets, server-calculated expiry, `410 Gone`, and no automatic deletion.
+- [x] Add a nullable expiration field through a versioned Prisma migration.
+- [x] Accept and validate expiration presets when creating a link.
+- [x] Reject redirects for expired links with a clean `410` response.
+- [x] Cover permanent, active, expired, and invalid-expiration cases in backend tests.
+- [x] Add Bruno requests for valid and invalid expiration values.
+- [ ] Obtain user validation of the backend behavior.
+- [ ] Add the expiration control and result information to the web interface.
+- [ ] Cover the frontend request and rendering behavior with tests.
+- [ ] Update public documentation and complete the full-stack acceptance checks.
+- [ ] Obtain final user validation.

@@ -25,6 +25,13 @@ export function validationExceptionFactory(
     });
   }
 
+  if (errors.some((error) => error.property === 'expiration')) {
+    return new BadRequestException({
+      code: 'INVALID_EXPIRATION',
+      message: 'Expiration must be one of: 1h, 1d, 7d, or 30d.',
+    });
+  }
+
   return new BadRequestException({
     code: 'VALIDATION_ERROR',
     message: 'The request body contains unsupported properties.',

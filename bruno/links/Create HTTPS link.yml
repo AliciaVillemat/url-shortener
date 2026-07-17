@@ -34,6 +34,10 @@ runtime:
         test('returns the configured short URL', function () {
           expect(res.body.shortUrl).to.equal(`${bru.getEnvVar('baseUrl')}/${res.body.code}`);
         });
+
+        test('creates a permanent link by default', function () {
+          expect(res.body.expiresAt).to.equal(null);
+        });
   assertions:
     - expression: res.status
       operator: eq

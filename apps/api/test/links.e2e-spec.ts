@@ -13,6 +13,7 @@ interface CreatedLinkBody {
   originalUrl: string;
   shortUrl: string;
   createdAt: string;
+  expiresAt: string | null;
 }
 
 interface ErrorBody {
@@ -64,12 +65,14 @@ describe('URL shortener API', () => {
     expect(body.shortUrl).toBe(`http://localhost:3001/${body.code}`);
     expect(typeof body.createdAt).toBe('string');
     expect(new Date(body.createdAt).toISOString()).toBe(body.createdAt);
+    expect(body.expiresAt).toBeNull();
 
     await expect(
       prisma.link.findUnique({ where: { code: body.code } }),
     ).resolves.toMatchObject({
       code: body.code,
       originalUrl,
+      expiresAt: null,
     });
   });
 
@@ -103,6 +106,29 @@ describe('URL shortener API', () => {
     await expect(prisma.link.count()).resolves.toBe(2);
   });
 
+  it('creates a link with an expiration calculated by the server', async () => {
+    const beforeRequest = Date.now();
+
+    const response = await request(server)
+      .post('/api/links')
+      .send({
+        url: 'https://example.com/temporary',
+        expiration: '1h',
+      })
+      .expect(201);
+    const afterRequest = Date.now();
+    const body = response.body as unknown as CreatedLinkBody;
+    const expiresAt = Date.parse(body.expiresAt ?? '');
+
+    expect(expiresAt).toBeGreaterThanOrEqual(beforeRequest + 60 * 60 * 1_000);
+    expect(expiresAt).toBeLessThanOrEqual(afterRequest + 60 * 60 * 1_000);
+    await expect(
+      prisma.link.findUnique({ where: { code: body.code } }),
+    ).resolves.toMatchObject({
+      expiresAt: new Date(expiresAt),
+    });
+  });
+
   it.each([
     [{}, 'URL_REQUIRED'],
     [{ url: 'not-a-url' }, 'INVALID_URL'],
@@ -130,6 +156,24 @@ describe('URL shortener API', () => {
     expect(body.code).toBe('URL_TOO_LONG');
   });
 
+  it.each(['2h', null, 7])(
+    'rejects the invalid expiration value %p',
+    async (expiration) => {
+      const response = await request(server)
+        .post('/api/links')
+        .send({ url: 'https://example.com', expiration })
+        .expect(400);
+      const body = response.body as unknown as ErrorBody;
+
+      expect(body).toEqual({
+        statusCode: 400,
+        code: 'INVALID_EXPIRATION',
+        message: 'Expiration must be one of: 1h, 1d, 7d, or 30d.',
+      });
+      await expect(prisma.link.count()).resolves.toBe(0);
+    },
+  );
+
   it('redirects to the persisted destination with HTTP 302', async () => {
     await prisma.link.create({
       data: {
@@ -143,6 +187,41 @@ describe('URL shortener API', () => {
       .redirects(0)
       .expect(302)
       .expect('Location', 'https://example.com/destination');
+  });
+
+  it('redirects when a link has not expired', async () => {
+    await prisma.link.create({
+      data: {
+        code: 'Actv001',
+        originalUrl: 'https://example.com/active',
+        expiresAt: new Date(Date.now() + 60_000),
+      },
+    });
+
+    await request(server)
+      .get('/Actv001')
+      .redirects(0)
+      .expect(302)
+      .expect('Location', 'https://example.com/active');
+  });
+
+  it('returns a clean 410 when a link has expired', async () => {
+    await prisma.link.create({
+      data: {
+        code: 'Expire1',
+        originalUrl: 'https://example.com/expired',
+        expiresAt: new Date(Date.now() - 1_000),
+      },
+    });
+
+    const response = await request(server).get('/Expire1').expect(410);
+    const body = response.body as unknown as ErrorBody;
+
+    expect(body).toEqual({
+      statusCode: 410,
+      code: 'LINK_EXPIRED',
+      message: 'This short link has expired.',
+    });
   });
 
   it('returns a clean 404 for an unknown code', async () => {

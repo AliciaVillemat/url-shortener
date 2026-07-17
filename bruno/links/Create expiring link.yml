@@ -1,0 +1,43 @@
+info:
+  name: Create expiring link
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: '{{baseUrl}}/api/links'
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "url": "https://example.com/temporary",
+        "expiration": "1h"
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.status === 201) {
+          bru.setVar('shortCode', res.body.code);
+        }
+    - type: tests
+      code: |-
+        test('returns a future expiration date', function () {
+          expect(res.body.expiresAt).to.be.a('string');
+          expect(Date.parse(res.body.expiresAt)).to.be.greaterThan(Date.now());
+        });
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: '201'
+    - expression: res.body.originalUrl
+      operator: eq
+      value: https://example.com/temporary
+
+settings:
+  encodeUrl: true
+  timeout: 5000

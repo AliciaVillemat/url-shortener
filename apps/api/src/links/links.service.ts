@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  GoneException,
   Injectable,
   NotFoundException,
   ServiceUnavailableException,
@@ -12,12 +13,18 @@ import {
   CodeGeneratorService,
   LINK_CODE_LENGTH,
 } from './code-generator.service';
-import type { CreatedLinkResponse } from './links.types';
+import type { CreatedLinkResponse, ExpirationPreset } from './links.types';
 
 const MAX_URL_LENGTH = 2_048;
 const MAX_CODE_ATTEMPTS = 5;
 const ALLOWED_PROTOCOLS = new Set(['http:', 'https:']);
 const CODE_PATTERN = new RegExp(`^[0-9A-Za-z]{${LINK_CODE_LENGTH}}$`);
+const EXPIRATION_DURATIONS_MS: Record<ExpirationPreset, number> = {
+  '1h': 60 * 60 * 1_000,
+  '1d': 24 * 60 * 60 * 1_000,
+  '7d': 7 * 24 * 60 * 60 * 1_000,
+  '30d': 30 * 24 * 60 * 60 * 1_000,
+};
 
 @Injectable()
 export class LinksService {
@@ -27,15 +34,21 @@ export class LinksService {
     private readonly configService: ConfigService,
   ) {}
 
-  async create(originalUrl: string): Promise<CreatedLinkResponse> {
+  async create(
+    originalUrl: string,
+    expiration?: ExpirationPreset,
+  ): Promise<CreatedLinkResponse> {
     this.validateUrl(originalUrl);
+    const expiresAt = expiration
+      ? new Date(Date.now() + EXPIRATION_DURATIONS_MS[expiration])
+      : null;
 
     for (let attempt = 0; attempt < MAX_CODE_ATTEMPTS; attempt += 1) {
       const code = this.codeGenerator.generate();
 
       try {
         const link = await this.prisma.link.create({
-          data: { code, originalUrl },
+          data: { code, originalUrl, expiresAt },
         });
 
         return {
@@ -43,6 +56,7 @@ export class LinksService {
           originalUrl: link.originalUrl,
           shortUrl: `${this.configService.getOrThrow<string>('PUBLIC_BASE_URL')}/${link.code}`,
           createdAt: link.createdAt.toISOString(),
+          expiresAt: link.expiresAt?.toISOString() ?? null,
         };
       } catch (error) {
         if (this.isUniqueCodeCollision(error)) {
@@ -68,6 +82,10 @@ export class LinksService {
 
     if (!link) {
       throw this.linkNotFound();
+    }
+
+    if (link.expiresAt && link.expiresAt.getTime() <= Date.now()) {
+      throw this.linkExpired();
     }
 
     return link.originalUrl;
@@ -111,6 +129,13 @@ export class LinksService {
     return new NotFoundException({
       code: 'LINK_NOT_FOUND',
       message: 'Short link not found.',
+    });
+  }
+
+  private linkExpired(): GoneException {
+    return new GoneException({
+      code: 'LINK_EXPIRED',
+      message: 'This short link has expired.',
     });
   }
 }
