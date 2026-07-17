@@ -16,6 +16,7 @@ const createdLink: CreatedLink = {
   originalUrl: 'https://example.com/a/long/path',
   shortUrl: 'http://localhost:3001/aB3dE9z',
   createdAt: '2026-07-17T08:30:00.000Z',
+  expiresAt: null,
 };
 
 describe('App', () => {
@@ -52,7 +53,9 @@ describe('App', () => {
 
     expect(screen.getByRole('button', { name: 'Shortening…' })).toBeDisabled();
     expect(mockedCreateShortLink).toHaveBeenCalledOnce();
-    expect(mockedCreateShortLink).toHaveBeenCalledWith(createdLink.originalUrl);
+    expect(mockedCreateShortLink).toHaveBeenCalledWith({
+      url: createdLink.originalUrl,
+    });
 
     await act(async () => {
       resolveRequest(createdLink);
@@ -68,6 +71,33 @@ describe('App', () => {
     expect(screen.getByRole('link', { name: 'Open' })).toHaveAttribute(
       'href',
       createdLink.shortUrl,
+    );
+    expect(screen.getByText('Does not expire')).toBeInTheDocument();
+  });
+
+  it('submits an expiration preset and renders the returned date', async () => {
+    const user = userEvent.setup();
+    const expiringLink: CreatedLink = {
+      ...createdLink,
+      expiresAt: '2026-07-24T08:30:00.000Z',
+    };
+    mockedCreateShortLink.mockResolvedValue(expiringLink);
+
+    render(<App />);
+
+    await user.type(screen.getByLabelText('URL'), expiringLink.originalUrl);
+    await user.selectOptions(screen.getByLabelText('Expiration'), '7d');
+    await user.click(screen.getByRole('button', { name: 'Shorten' }));
+
+    expect(mockedCreateShortLink).toHaveBeenCalledWith({
+      url: expiringLink.originalUrl,
+      expiration: '7d',
+    });
+
+    const expiration = await screen.findByText(/Expires/);
+    expect(expiration.querySelector('time')).toHaveAttribute(
+      'datetime',
+      expiringLink.expiresAt,
     );
   });
 

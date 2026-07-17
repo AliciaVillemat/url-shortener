@@ -1,8 +1,16 @@
+export type ExpirationPreset = '1h' | '1d' | '7d' | '30d';
+
+export interface CreateLinkInput {
+  url: string;
+  expiration?: ExpirationPreset;
+}
+
 export interface CreatedLink {
   code: string;
   originalUrl: string;
   shortUrl: string;
   createdAt: string;
+  expiresAt: string | null;
 }
 
 const API_BASE_URL = getApiBaseUrl();
@@ -29,7 +37,9 @@ function getApiBaseUrl(): string {
   return value.replace(/\/$/, '');
 }
 
-export async function createShortLink(url: string): Promise<CreatedLink> {
+export async function createShortLink(
+  input: CreateLinkInput,
+): Promise<CreatedLink> {
   let response: Response;
 
   try {
@@ -38,7 +48,7 @@ export async function createShortLink(url: string): Promise<CreatedLink> {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify(input),
     });
   } catch {
     throw new Error(
@@ -81,6 +91,7 @@ function isCreatedLink(value: unknown): value is CreatedLink {
     typeof value.code === 'string' &&
     typeof value.originalUrl === 'string' &&
     typeof value.shortUrl === 'string' &&
-    typeof value.createdAt === 'string'
+    typeof value.createdAt === 'string' &&
+    (value.expiresAt === null || typeof value.expiresAt === 'string')
   );
 }

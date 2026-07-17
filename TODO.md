@@ -5,8 +5,8 @@ This file is the source of truth for project progress. It is updated at every va
 ## Resume here
 
 - **Current milestone:** 10 — optional link expiration
-- **Status:** backend complete; awaiting user validation
-- **Next action:** user reviews and manually exercises the expiration API before frontend implementation
+- **Status:** frontend complete; awaiting user visual validation
+- **Next action:** user reviews the expiration selector and result information before final documentation and acceptance checks
 - **Last validated milestone:** 9 — clean-install acceptance audit
 - **Remote repository:** `https://github.com/AliciaVillemat/url-shortener` (public)
 
@@ -142,8 +142,8 @@ Verification evidence recorded on 2026-07-17:
 - [x] Reject redirects for expired links with a clean `410` response.
 - [x] Cover permanent, active, expired, and invalid-expiration cases in backend tests.
 - [x] Add Bruno requests for valid and invalid expiration values.
-- [ ] Obtain user validation of the backend behavior.
-- [ ] Add the expiration control and result information to the web interface.
-- [ ] Cover the frontend request and rendering behavior with tests.
+- [x] Obtain user validation of the backend behavior.
+- [x] Add the expiration control and result information to the web interface.
+- [x] Cover the frontend request and rendering behavior with tests.
 - [ ] Update public documentation and complete the full-stack acceptance checks.
 - [ ] Obtain final user validation.

@@ -29,6 +29,14 @@ export function CheckIcon(props: IconProps) {
   );
 }
 
+export function ChevronDownIcon(props: IconProps) {
+  return (
+    <svg {...commonProps} {...props}>
+      <path d="m7 10 5 5 5-5" />
+    </svg>
+  );
+}
+
 export function CopyIcon(props: IconProps) {
   return (
     <svg {...commonProps} {...props}>

@@ -1,18 +1,42 @@
 import { FormEvent, useRef, useState } from 'react';
 
-import { createShortLink, type CreatedLink } from './api/links';
+import {
+  createShortLink,
+  type CreatedLink,
+  type CreateLinkInput,
+  type ExpirationPreset,
+} from './api/links';
 import {
   ArrowUpRightIcon,
   CheckIcon,
+  ChevronDownIcon,
   CopyIcon,
   LinkIcon,
 } from './components/icons';
 import { validateUrl } from './lib/validate-url';
 
 type CopyState = 'idle' | 'copied' | 'failed';
+type ExpirationSelection = '' | ExpirationPreset;
+
+const EXPIRATION_OPTIONS: ReadonlyArray<{
+  label: string;
+  value: ExpirationSelection;
+}> = [
+  { label: 'Never', value: '' },
+  { label: '1 hour', value: '1h' },
+  { label: '1 day', value: '1d' },
+  { label: '7 days', value: '7d' },
+  { label: '30 days', value: '30d' },
+];
+
+const expirationDateFormatter = new Intl.DateTimeFormat(undefined, {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+});
 
 export default function App() {
   const [url, setUrl] = useState('');
+  const [expiration, setExpiration] = useState<ExpirationSelection>('');
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<CreatedLink | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,7 +59,8 @@ export default function App() {
     setCopyState('idle');
 
     try {
-      const createdLink = await createShortLink(url);
+      const input: CreateLinkInput = expiration ? { url, expiration } : { url };
+      const createdLink = await createShortLink(input);
       setResult(createdLink);
     } catch (caughtError) {
       setResult(null);
@@ -167,6 +192,41 @@ export default function App() {
                 The URL must start with http:// or https://
               </p>
             )}
+
+            <div className="mt-5 flex flex-col gap-2 border-t border-line/80 pt-5 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
+              <div>
+                <label
+                  className="block text-sm font-medium"
+                  htmlFor="expiration"
+                >
+                  Expiration
+                </label>
+                <p className="mt-0.5 text-sm text-muted" id="expiration-hint">
+                  Choose how long the short link should work.
+                </p>
+              </div>
+
+              <div className="relative w-full sm:w-36">
+                <select
+                  aria-describedby="expiration-hint"
+                  className="peer h-10 w-full appearance-none rounded-lg border border-line bg-surface pl-3 pr-10 text-sm outline-none transition hover:border-line-strong focus:border-accent focus:bg-white focus:ring-4 focus:ring-accent/10 disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={isSubmitting}
+                  id="expiration"
+                  name="expiration"
+                  onChange={(event) => {
+                    setExpiration(event.target.value as ExpirationSelection);
+                  }}
+                  value={expiration}
+                >
+                  {EXPIRATION_OPTIONS.map((option) => (
+                    <option key={option.value || 'never'} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-muted transition peer-focus:text-accent peer-disabled:opacity-60" />
+              </div>
+            </div>
           </form>
 
           <div aria-live="polite">
@@ -222,9 +282,23 @@ export default function App() {
                   </div>
                 </div>
 
-                <p className="mt-4 truncate border-t border-line pt-4 text-sm text-muted">
-                  Destination: {result.originalUrl}
-                </p>
+                <div className="mt-4 grid gap-2 border-t border-line pt-4 text-sm text-muted sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6">
+                  <p className="truncate">Destination: {result.originalUrl}</p>
+                  <p>
+                    {result.expiresAt ? (
+                      <>
+                        Expires{' '}
+                        <time dateTime={result.expiresAt}>
+                          {expirationDateFormatter.format(
+                            new Date(result.expiresAt),
+                          )}
+                        </time>
+                      </>
+                    ) : (
+                      'Does not expire'
+                    )}
+                  </p>
+                </div>
 
                 {copyState === 'failed' ? (
                   <p className="mt-3 text-sm text-error" role="alert">
