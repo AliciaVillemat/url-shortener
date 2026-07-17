@@ -133,7 +133,7 @@ Verification evidence recorded on 2026-07-17:
 - [x] Verify the final GitHub repository content.
 - [x] Obtain final user acceptance and push the final audit commit.
 
-### 10. Optional link expiration `[~]`
+### 10. Optional link expiration `[x]`
 
 - [x] Define the product rules: optional presets, server-calculated expiry, `410 Gone`, and no automatic deletion.
 - [x] Add a nullable expiration field through a versioned Prisma migration.
